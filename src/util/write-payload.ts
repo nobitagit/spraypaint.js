@@ -104,10 +104,11 @@ export class WritePayload<T extends SpraypaintBase> {
           data = []
           relatedModels.forEach(relatedModel => {
             if (
-              !this._isNewAndMarkedForDestruction(relatedModel) &&
-              (idOnly ||
-                this.model.hasDirtyRelation(key, relatedModel) ||
-                relatedModel.isDirty(nested))
+              (!this._isNewAndMarkedForDestruction(relatedModel) &&
+                (idOnly ||
+                  this.model.hasDirtyRelation(key, relatedModel) ||
+                  relatedModel.isDirty(nested))) ||
+              !this.model.isPersisted
             ) {
               data.push(this._processRelatedModel(relatedModel, nested, idOnly))
             }
